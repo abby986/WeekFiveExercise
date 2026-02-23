@@ -132,6 +132,78 @@
                 </div>
             </div>
         </section>
+
+        <section class="customer-reviews">
+            <div class="container">
+                <h2>What Our Guests Say</h2>
+
+                <div class="reviews-carousel">
+                    <div class="carousel-stage">
+                        <div class="carousel-track">
+                            <div class="review-card">
+                                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                                <blockquote class="review-text">"The pasta was absolutely divine — just like Nonna used to make. We've been coming to Mario's Kitchen for years and it never disappoints."</blockquote>
+                                <p class="reviewer-name">— Maria Rossi</p>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-stars" aria-label="4 out of 5 stars">★★★★☆</div>
+                                <blockquote class="review-text">"The wood-fired pizza is the best I've had outside of Naples. Crispy crust, fresh basil, and the sauce has just the right balance. We'll be back."</blockquote>
+                                <p class="reviewer-name">— Giuseppe Ferraro</p>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                                <blockquote class="review-text">"From the warm bread to the tiramisu, every course was perfect. The staff treated us like family. This is what Italian dining should feel like."</blockquote>
+                                <p class="reviewer-name">— Elena Marchetti</p>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-btn--prev" aria-label="Previous review">&#8249;</button>
+                        <button class="carousel-btn carousel-btn--next" aria-label="Next review">&#8250;</button>
+                    </div>
+                    <div class="carousel-dots">
+                        <button class="dot dot--active" aria-label="Go to review 1"></button>
+                        <button class="dot" aria-label="Go to review 2"></button>
+                        <button class="dot" aria-label="Go to review 3"></button>
+                    </div>
+                </div>
+
+                <!-- Review submission form -->
+                <div class="review-form-wrapper">
+                    <h3>Share Your Experience</h3>
+                    <form id="reviewForm" novalidate>
+                        <div class="form-group">
+                            <label for="reviewerNameInput">Your Name *</label>
+                            <input type="text" id="reviewerNameInput" name="reviewerName" required placeholder="e.g. Maria Rossi">
+                        </div>
+
+                        <fieldset class="form-group star-rating-group">
+                            <legend>Your Rating *</legend>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5" aria-label="5 stars">★</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" aria-label="4 stars">★</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" aria-label="3 stars">★</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" aria-label="2 stars">★</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" aria-label="1 star">★</label>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group">
+                            <label for="reviewTextInput">Your Review *</label>
+                            <textarea id="reviewTextInput" name="reviewText" rows="4" required placeholder="Tell us about your experience..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
+                    <div id="reviewSuccess" class="review-success" hidden>
+                        <strong>Thank you!</strong> Your review has been added to the slider above.
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -167,6 +239,237 @@
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
+
+        // Carousel
+        (function () {
+            const track = document.querySelector('.carousel-track');
+            let current = 0;
+
+            // Re-query total and dots each call so dynamically added cards/dots work
+            function goTo(index) {
+                const total = track.querySelectorAll('.review-card').length;
+                current = (index + total) % total;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                document.querySelectorAll('.carousel-dots .dot').forEach(function (dot, i) {
+                    dot.classList.toggle('dot--active', i === current);
+                });
+            }
+
+            // Auto-play — always clear before setting to prevent double intervals
+            const INTERVAL_MS = 5000;
+            let timer;
+            function startTimer() {
+                clearInterval(timer);
+                timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
+            }
+
+            document.querySelector('.carousel-btn--prev').addEventListener('click', function () {
+                goTo(current - 1);
+                startTimer(); // reset countdown after manual navigation
+            });
+
+            document.querySelector('.carousel-btn--next').addEventListener('click', function () {
+                goTo(current + 1);
+                startTimer(); // reset countdown after manual navigation
+            });
+
+            document.querySelectorAll('.carousel-dots .dot').forEach(function (dot, i) {
+                dot.addEventListener('click', function () {
+                    goTo(i);
+                    startTimer(); // reset countdown after manual navigation
+                });
+            });
+
+            // Allow external code to navigate without needing direct access to goTo
+            track.addEventListener('carousel:goto', function (e) {
+                goTo(e.detail.index);
+                startTimer();
+            });
+
+            const stage = document.querySelector('.reviews-carousel');
+            stage.addEventListener('mouseenter', function () { clearInterval(timer); });
+            stage.addEventListener('mouseleave', function () { startTimer(); });
+
+            startTimer(); // begin auto-play
+        }());
+
+        // Star rating widget
+        (function () {
+            const widget = document.querySelector('.star-rating');
+            const labels = Array.from(widget.querySelectorAll('label'));
+            const inputs = Array.from(widget.querySelectorAll('input[type="radio"]'));
+
+            // Each label's preceding sibling is its radio input.
+            // || 0 guards against NaN so paint()'s > 0 sentinel always works.
+            function valueOf(label) {
+                return parseInt(label.previousElementSibling.value, 10) || 0;
+            }
+
+            // Set inline colour on every label; clearing (passing 0) lets
+            // CSS input:checked ~ label take over for the selected state
+            function paint(upTo) {
+                labels.forEach(function (label) {
+                    label.style.color = upTo > 0
+                        ? (valueOf(label) <= upTo ? '#C8922A' : '#D1D5DB')
+                        : '';
+                });
+            }
+
+            // Hover: preview the rating under the cursor
+            labels.forEach(function (label) {
+                label.addEventListener('mouseenter', function () {
+                    paint(valueOf(label));
+                });
+            });
+
+            // Keyboard: preview the focused radio's value
+            inputs.forEach(function (input) {
+                input.addEventListener('focus', function () {
+                    paint(valueOf(this.nextElementSibling));
+                });
+            });
+
+            // Mouse/keyboard leave: restore CSS-driven selected state
+            widget.addEventListener('mouseleave', function () { paint(0); });
+            widget.addEventListener('focusout', function (e) {
+                if (!widget.contains(e.relatedTarget)) { paint(0); }
+            });
+
+            // Click: lock in the selection; radio input natively stores the value
+            inputs.forEach(function (input) {
+                input.addEventListener('change', function () {
+                    paint(0); // hand back to CSS so :checked ~ label shows selection
+                });
+            });
+        }());
+
+        // Review form submission
+        (function () {
+            const form          = document.getElementById('reviewForm');
+            const track         = document.querySelector('.carousel-track');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            const successMsg    = document.getElementById('reviewSuccess');
+            const starLabels    = Array.from(document.querySelectorAll('.star-rating label'));
+            // Stable DOM elements queried once (ratingInput must stay inside the
+            // handler because :checked state changes on each submission)
+            const nameInput   = document.getElementById('reviewerNameInput');
+            const textInput   = document.getElementById('reviewTextInput');
+            const ratingGroup = document.querySelector('.star-rating-group');
+            let successTimer;
+
+            // --- Validation helpers ---
+            function setError(field, message) {
+                clearError(field);
+                const err = document.createElement('p');
+                err.className = 'form-error';
+                err.textContent = message;
+                field.insertAdjacentElement('afterend', err);
+                field.setAttribute('aria-invalid', 'true');
+            }
+
+            function clearError(field) {
+                const existing = field.parentElement.querySelector('.form-error');
+                if (existing) existing.remove();
+                field.removeAttribute('aria-invalid');
+            }
+
+            // --- Card builders (textContent only — no innerHTML with user data) ---
+            function buildStars(rating) {
+                return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+            }
+
+            function buildCard(name, rating, text) {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+
+                const stars = document.createElement('div');
+                stars.className = 'review-stars';
+                stars.setAttribute('aria-label', rating + ' out of 5 stars');
+                stars.textContent = buildStars(rating);
+
+                const quote = document.createElement('blockquote');
+                quote.className = 'review-text';
+                quote.textContent = '\u201c' + text + '\u201d';
+
+                const byline = document.createElement('p');
+                byline.className = 'reviewer-name';
+                byline.textContent = '\u2014 ' + name;
+
+                card.appendChild(stars);
+                card.appendChild(quote);
+                card.appendChild(byline);
+                return card;
+            }
+
+            function buildDot(index) {
+                const dot = document.createElement('button');
+                dot.className = 'dot';
+                dot.setAttribute('aria-label', 'Go to review ' + (index + 1));
+                dot.addEventListener('click', function () {
+                    track.dispatchEvent(new CustomEvent('carousel:goto', { detail: { index: index } }));
+                });
+                return dot;
+            }
+
+            // --- Form submit ---
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // ratingInput must be queried fresh — :checked state changes each submit
+                const ratingInput = document.querySelector('input[name="rating"]:checked');
+
+                // Clear previous errors
+                clearError(nameInput);
+                clearError(textInput);
+                const prevRatingErr = ratingGroup.querySelector('.form-error');
+                if (prevRatingErr) prevRatingErr.remove();
+
+                let valid = true;
+
+                if (!nameInput.value.trim()) {
+                    setError(nameInput, 'Please enter your name.');
+                    valid = false;
+                }
+
+                if (!ratingInput) {
+                    const err = document.createElement('p');
+                    err.className = 'form-error';
+                    err.textContent = 'Please select a star rating.';
+                    ratingGroup.querySelector('.star-rating').insertAdjacentElement('afterend', err);
+                    valid = false;
+                }
+
+                if (!textInput.value.trim()) {
+                    setError(textInput, 'Please write a brief review.');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                // Build and inject card + dot
+                const name   = nameInput.value.trim();
+                const rating = parseInt(ratingInput.value, 10);
+                const text   = textInput.value.trim();
+
+                track.appendChild(buildCard(name, rating, text));
+
+                const newIndex = track.querySelectorAll('.review-card').length - 1;
+                dotsContainer.appendChild(buildDot(newIndex));
+
+                // Navigate to the new card
+                track.dispatchEvent(new CustomEvent('carousel:goto', { detail: { index: newIndex } }));
+
+                // Reset form and star widget inline styles
+                form.reset();
+                starLabels.forEach(function (label) { label.style.color = ''; });
+
+                // Show success message; clear any previous outstanding timer so
+                // rapid submissions don't hide the message too early
+                successMsg.removeAttribute('hidden');
+                clearTimeout(successTimer);
+                successTimer = setTimeout(function () { successMsg.setAttribute('hidden', ''); }, 4000);
+            });
+        }());
     </script>
 </body>
 </html>

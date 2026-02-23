@@ -433,6 +433,203 @@ section {
     font-weight: bold;
 }
 
+/* Customer Reviews Section */
+.customer-reviews {
+    background-color: var(--cream-dark);
+}
+
+/* Review Card */
+.review-card {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px var(--shadow);
+    padding: 2.5rem 3rem;
+    text-align: center;
+    flex: 0 0 100%;
+}
+
+.review-stars {
+    font-size: 1.8rem;
+    color: #C8922A;
+    letter-spacing: 3px;
+    margin-bottom: 1.2rem;
+}
+
+.review-text {
+    font-family: 'Georgia', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--gray);
+    line-height: 1.9;
+    margin: 0 0 1.5rem;
+}
+
+.reviewer-name {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 1rem;
+    color: var(--green);
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Reviews Carousel */
+.reviews-carousel {
+    max-width: 800px;
+    margin: 3rem auto 0;
+}
+
+.carousel-stage {
+    position: relative;
+    padding: 0 4rem;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.4s ease;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--white);
+    border: 2px solid var(--red);
+    color: var(--red);
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.carousel-btn:hover {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.carousel-btn--prev { left: 0; }
+.carousel-btn--next { right: 0; }
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+.dot {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    border: 2px solid var(--gray-light);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    padding: 0;
+}
+
+.dot--active {
+    background-color: var(--red);
+    border-color: var(--red);
+}
+
+/* Review Submission Form */
+.review-form-wrapper {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2.5rem 3rem;
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+.review-form-wrapper h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.review-form-wrapper .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.review-success {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    color: #155724;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.form-error {
+    color: var(--red);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+}
+
+/* Fieldset reset so .star-rating-group looks like a normal .form-group */
+.star-rating-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.star-rating-group legend {
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
+/* Star Rating Widget */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    margin-top: 0.4rem;
+}
+
+/* Visually hidden but still reachable by keyboard and screen readers */
+.star-rating input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.star-rating label {
+    font-size: 2.2rem;
+    color: #D1D5DB;
+    cursor: pointer;
+    transition: color 0.15s ease;
+    line-height: 1;
+}
+
+/* Highlight the checked star and every lower-value star after it in the
+   reversed DOM (which are the visually left-hand stars) */
+.star-rating input[type="radio"]:checked ~ label {
+    color: #C8922A;
+}
+
 /* About Page Styles */
 .story-section {
     background-color: var(--white);
@@ -913,6 +1110,36 @@ footer {
         padding: 0.8rem 1.5rem;
         font-size: 0.9rem;
     }
+
+    /* Carousel — tighter arrow padding and smaller buttons on phones */
+    .carousel-stage {
+        padding: 0 2rem;
+    }
+
+    .carousel-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.3rem;
+    }
+
+    .review-card {
+        padding: 1.5rem 1rem;
+    }
+
+    /* Slightly larger dot touch target on phones */
+    .dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    /* Review form — tighter padding and smaller stars */
+    .review-form-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    .star-rating label {
+        font-size: 1.8rem;
+    }
 }
 
 /* Food Gallery */
@@ -961,5 +1188,23 @@ footer {
 @media (max-width: 768px) {
     .gallery-grid {
         grid-template-columns: 1fr;
+    }
+
+    .carousel-stage {
+        padding: 0 2.5rem;
+    }
+
+    .review-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .carousel-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.6rem;
+    }
+
+    .review-form-wrapper {
+        padding: 2rem 1.5rem;
     }
 }
