@@ -350,6 +350,12 @@
             const dotsContainer = document.querySelector('.carousel-dots');
             const successMsg    = document.getElementById('reviewSuccess');
             const starLabels    = Array.from(document.querySelectorAll('.star-rating label'));
+            // Stable DOM elements queried once (ratingInput must stay inside the
+            // handler because :checked state changes on each submission)
+            const nameInput   = document.getElementById('reviewerNameInput');
+            const textInput   = document.getElementById('reviewTextInput');
+            const ratingGroup = document.querySelector('.star-rating-group');
+            let successTimer;
 
             // --- Validation helpers ---
             function setError(field, message) {
@@ -409,10 +415,8 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                const nameInput   = document.getElementById('reviewerNameInput');
-                const textInput   = document.getElementById('reviewTextInput');
+                // ratingInput must be queried fresh — :checked state changes each submit
                 const ratingInput = document.querySelector('input[name="rating"]:checked');
-                const ratingGroup = document.querySelector('.star-rating-group');
 
                 // Clear previous errors
                 clearError(nameInput);
@@ -459,9 +463,11 @@
                 form.reset();
                 starLabels.forEach(function (label) { label.style.color = ''; });
 
-                // Show success message briefly
+                // Show success message; clear any previous outstanding timer so
+                // rapid submissions don't hide the message too early
                 successMsg.removeAttribute('hidden');
-                setTimeout(function () { successMsg.setAttribute('hidden', ''); }, 4000);
+                clearTimeout(successTimer);
+                successTimer = setTimeout(function () { successMsg.setAttribute('hidden', ''); }, 4000);
             });
         }());
     </script>
