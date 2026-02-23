@@ -524,6 +524,8 @@ section {
 }
 
 .dot {
+    appearance: none;
+    -webkit-appearance: none;
     width: 10px;
     height: 10px;
     border-radius: 50%;
