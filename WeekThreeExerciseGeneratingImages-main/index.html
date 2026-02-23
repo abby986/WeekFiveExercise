@@ -166,8 +166,39 @@
                     </div>
                 </div>
 
-                <!-- Review submission form will go here (Steps 7–9) -->
-                <div class="reviews-form-placeholder"></div>
+                <!-- Review submission form -->
+                <div class="review-form-wrapper">
+                    <h3>Share Your Experience</h3>
+                    <form id="reviewForm" novalidate>
+                        <div class="form-group">
+                            <label for="reviewerNameInput">Your Name *</label>
+                            <input type="text" id="reviewerNameInput" name="reviewerName" required placeholder="e.g. Maria Rossi">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Your Rating *</label>
+                            <div class="star-rating" role="radiogroup" aria-label="Star rating">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5" aria-label="5 stars">★</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" aria-label="4 stars">★</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" aria-label="3 stars">★</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" aria-label="2 stars">★</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" aria-label="1 star">★</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reviewTextInput">Your Review *</label>
+                            <textarea id="reviewTextInput" name="reviewText" rows="4" required placeholder="Tell us about your experience..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
