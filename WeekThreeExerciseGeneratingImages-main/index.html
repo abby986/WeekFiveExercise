@@ -290,11 +290,11 @@
             const widget = document.querySelector('.star-rating');
             const labels = Array.from(widget.querySelectorAll('label'));
             const inputs = Array.from(widget.querySelectorAll('input[type="radio"]'));
-            let selectedRating = 0;
 
-            // Each label's preceding sibling is its radio input
+            // Each label's preceding sibling is its radio input.
+            // || 0 guards against NaN so paint()'s > 0 sentinel always works.
             function valueOf(label) {
-                return parseInt(label.previousElementSibling.value, 10);
+                return parseInt(label.previousElementSibling.value, 10) || 0;
             }
 
             // Set inline colour on every label; clearing (passing 0) lets
@@ -317,7 +317,7 @@
             // Keyboard: preview the focused radio's value
             inputs.forEach(function (input) {
                 input.addEventListener('focus', function () {
-                    paint(parseInt(this.value, 10));
+                    paint(valueOf(this.nextElementSibling));
                 });
             });
 
@@ -327,10 +327,9 @@
                 if (!widget.contains(e.relatedTarget)) { paint(0); }
             });
 
-            // Click: lock in the selection
+            // Click: lock in the selection; radio input natively stores the value
             inputs.forEach(function (input) {
                 input.addEventListener('change', function () {
-                    selectedRating = parseInt(this.value, 10);
                     paint(0); // hand back to CSS so :checked ~ label shows selection
                 });
             });
