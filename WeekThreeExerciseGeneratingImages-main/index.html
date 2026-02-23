@@ -198,6 +198,9 @@
 
                         <button type="submit" class="btn">Submit Review</button>
                     </form>
+                    <div id="reviewSuccess" class="review-success" hidden>
+                        <strong>Thank you!</strong> Your review has been added to the slider above.
+                    </div>
                 </div>
             </div>
         </section>
@@ -240,15 +243,14 @@
         // Carousel
         (function () {
             const track = document.querySelector('.carousel-track');
-            const cards = track.querySelectorAll('.review-card');
-            const dots  = document.querySelectorAll('.carousel-dots .dot');
-            const total = cards.length;
             let current = 0;
 
+            // Re-query total and dots each call so dynamically added cards/dots work
             function goTo(index) {
+                const total = track.querySelectorAll('.review-card').length;
                 current = (index + total) % total;
                 track.style.transform = `translateX(-${current * 100}%)`;
-                dots.forEach(function (dot, i) {
+                document.querySelectorAll('.carousel-dots .dot').forEach(function (dot, i) {
                     dot.classList.toggle('dot--active', i === current);
                 });
             }
@@ -271,11 +273,17 @@
                 startTimer(); // reset countdown after manual navigation
             });
 
-            dots.forEach(function (dot, i) {
+            document.querySelectorAll('.carousel-dots .dot').forEach(function (dot, i) {
                 dot.addEventListener('click', function () {
                     goTo(i);
                     startTimer(); // reset countdown after manual navigation
                 });
+            });
+
+            // Allow external code to navigate without needing direct access to goTo
+            track.addEventListener('carousel:goto', function (e) {
+                goTo(e.detail.index);
+                startTimer();
             });
 
             const stage = document.querySelector('.reviews-carousel');
@@ -332,6 +340,128 @@
                 input.addEventListener('change', function () {
                     paint(0); // hand back to CSS so :checked ~ label shows selection
                 });
+            });
+        }());
+
+        // Review form submission
+        (function () {
+            const form          = document.getElementById('reviewForm');
+            const track         = document.querySelector('.carousel-track');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            const successMsg    = document.getElementById('reviewSuccess');
+            const starLabels    = Array.from(document.querySelectorAll('.star-rating label'));
+
+            // --- Validation helpers ---
+            function setError(field, message) {
+                clearError(field);
+                const err = document.createElement('p');
+                err.className = 'form-error';
+                err.textContent = message;
+                field.insertAdjacentElement('afterend', err);
+                field.setAttribute('aria-invalid', 'true');
+            }
+
+            function clearError(field) {
+                const existing = field.parentElement.querySelector('.form-error');
+                if (existing) existing.remove();
+                field.removeAttribute('aria-invalid');
+            }
+
+            // --- Card builders (textContent only — no innerHTML with user data) ---
+            function buildStars(rating) {
+                return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+            }
+
+            function buildCard(name, rating, text) {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+
+                const stars = document.createElement('div');
+                stars.className = 'review-stars';
+                stars.setAttribute('aria-label', rating + ' out of 5 stars');
+                stars.textContent = buildStars(rating);
+
+                const quote = document.createElement('blockquote');
+                quote.className = 'review-text';
+                quote.textContent = '\u201c' + text + '\u201d';
+
+                const byline = document.createElement('p');
+                byline.className = 'reviewer-name';
+                byline.textContent = '\u2014 ' + name;
+
+                card.appendChild(stars);
+                card.appendChild(quote);
+                card.appendChild(byline);
+                return card;
+            }
+
+            function buildDot(index) {
+                const dot = document.createElement('button');
+                dot.className = 'dot';
+                dot.setAttribute('aria-label', 'Go to review ' + (index + 1));
+                dot.addEventListener('click', function () {
+                    track.dispatchEvent(new CustomEvent('carousel:goto', { detail: { index: index } }));
+                });
+                return dot;
+            }
+
+            // --- Form submit ---
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const nameInput   = document.getElementById('reviewerNameInput');
+                const textInput   = document.getElementById('reviewTextInput');
+                const ratingInput = document.querySelector('input[name="rating"]:checked');
+                const ratingGroup = document.querySelector('.star-rating-group');
+
+                // Clear previous errors
+                clearError(nameInput);
+                clearError(textInput);
+                const prevRatingErr = ratingGroup.querySelector('.form-error');
+                if (prevRatingErr) prevRatingErr.remove();
+
+                let valid = true;
+
+                if (!nameInput.value.trim()) {
+                    setError(nameInput, 'Please enter your name.');
+                    valid = false;
+                }
+
+                if (!ratingInput) {
+                    const err = document.createElement('p');
+                    err.className = 'form-error';
+                    err.textContent = 'Please select a star rating.';
+                    ratingGroup.querySelector('.star-rating').insertAdjacentElement('afterend', err);
+                    valid = false;
+                }
+
+                if (!textInput.value.trim()) {
+                    setError(textInput, 'Please write a brief review.');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                // Build and inject card + dot
+                const name   = nameInput.value.trim();
+                const rating = parseInt(ratingInput.value, 10);
+                const text   = textInput.value.trim();
+
+                track.appendChild(buildCard(name, rating, text));
+
+                const newIndex = track.querySelectorAll('.review-card').length - 1;
+                dotsContainer.appendChild(buildDot(newIndex));
+
+                // Navigate to the new card
+                track.dispatchEvent(new CustomEvent('carousel:goto', { detail: { index: newIndex } }));
+
+                // Reset form and star widget inline styles
+                form.reset();
+                starLabels.forEach(function (label) { label.style.color = ''; });
+
+                // Show success message briefly
+                successMsg.removeAttribute('hidden');
+                setTimeout(function () { successMsg.setAttribute('hidden', ''); }, 4000);
             });
         }());
     </script>
