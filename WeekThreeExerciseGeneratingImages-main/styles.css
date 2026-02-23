@@ -486,6 +486,7 @@ section {
 .carousel-track {
     display: flex;
     overflow: hidden;
+    transition: transform 0.4s ease;
 }
 
 .carousel-btn {

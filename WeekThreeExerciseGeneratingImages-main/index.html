@@ -145,12 +145,24 @@
                                 <blockquote class="review-text">"The pasta was absolutely divine — just like Nonna used to make. We've been coming to Mario's Kitchen for years and it never disappoints."</blockquote>
                                 <p class="reviewer-name">— Maria Rossi</p>
                             </div>
+                            <div class="review-card">
+                                <div class="review-stars" aria-label="4 out of 5 stars">★★★★☆</div>
+                                <blockquote class="review-text">"The wood-fired pizza is the best I've had outside of Naples. Crispy crust, fresh basil, and the sauce has just the right balance. We'll be back."</blockquote>
+                                <p class="reviewer-name">— Giuseppe Ferraro</p>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                                <blockquote class="review-text">"From the warm bread to the tiramisu, every course was perfect. The staff treated us like family. This is what Italian dining should feel like."</blockquote>
+                                <p class="reviewer-name">— Elena Marchetti</p>
+                            </div>
                         </div>
                         <button class="carousel-btn carousel-btn--prev" aria-label="Previous review">&#8249;</button>
                         <button class="carousel-btn carousel-btn--next" aria-label="Next review">&#8250;</button>
                     </div>
                     <div class="carousel-dots">
                         <button class="dot dot--active" aria-label="Go to review 1"></button>
+                        <button class="dot" aria-label="Go to review 2"></button>
+                        <button class="dot" aria-label="Go to review 3"></button>
                     </div>
                 </div>
 
@@ -193,6 +205,35 @@
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
+
+        // Carousel
+        (function () {
+            const track = document.querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.review-card');
+            const dots  = document.querySelectorAll('.carousel-dots .dot');
+            const total = cards.length;
+            let current = 0;
+
+            function goTo(index) {
+                current = (index + total) % total;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('dot--active', i === current);
+                });
+            }
+
+            document.querySelector('.carousel-btn--prev').addEventListener('click', function () {
+                goTo(current - 1);
+            });
+
+            document.querySelector('.carousel-btn--next').addEventListener('click', function () {
+                goTo(current + 1);
+            });
+
+            dots.forEach(function (dot, i) {
+                dot.addEventListener('click', function () { goTo(i); });
+            });
+        }());
     </script>
 </body>
 </html>
