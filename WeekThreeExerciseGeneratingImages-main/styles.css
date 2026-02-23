@@ -433,6 +433,12 @@ section {
     font-weight: bold;
 }
 
+/* Customer Reviews Section */
+.customer-reviews {
+    background-color: var(--cream-dark);
+    text-align: center;
+}
+
 /* About Page Styles */
 .story-section {
     background-color: var(--white);
