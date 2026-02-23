@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Mario's Kitchen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Mario's <span>Kitchen</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Contact Us</h1>
+            <p>We would love to hear from you</p>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <div class="contact-details">
+                            <p><strong>Address:</strong> 742 Bella Vista Avenue, San Lorenzo, CA 94580</p>
+                            <p><strong>Phone:</strong> (555) 847-2626</p>
+                            <p><strong>Email:</strong> reservations@marioskitchen.com</p>
+                        </div>
+
+                        <h3>Reservations</h3>
+                        <p>For parties of 5 or more, we recommend making a reservation at least 48 hours in advance. You can call us directly or use the contact form to request a reservation. Walk-ins are always welcome based on availability.</p>
+
+                        <h3>Private Events</h3>
+                        <p>Our private dining room accommodates up to 40 guests and is perfect for rehearsal dinners, corporate events, birthday celebrations, and other special occasions. Contact our events coordinator at events@marioskitchen.com for availability and custom menu options.</p>
+
+                        <div class="restaurant-image">
+                            <img src="images/contact-section.png" alt="Mario's Kitchen restaurant interior">
+                        </div>
+                    </div>
+
+                    <div class="contact-form">
+                        <h3>Send Us a Message</h3>
+                        <form id="contactForm" action="#" method="POST">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Inquiry Type *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select an option</option>
+                                    <option value="reservation">Reservation Request</option>
+                                    <option value="private-event">Private Event Inquiry</option>
+                                    <option value="catering">Catering Services</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="general">General Question</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="date">Preferred Date</label>
+                                    <input type="date" id="date" name="date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="guests">Number of Guests</label>
+                                    <select id="guests" name="guests">
+                                        <option value="">Select</option>
+                                        <option value="1-2">1-2 guests</option>
+                                        <option value="3-4">3-4 guests</option>
+                                        <option value="5-6">5-6 guests</option>
+                                        <option value="7-10">7-10 guests</option>
+                                        <option value="11-20">11-20 guests</option>
+                                        <option value="20+">20+ guests</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="5" required placeholder="Please share any special requests, dietary restrictions, or questions you may have..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+
+                        <div id="formSuccess" style="display: none; margin-top: 2rem; padding: 1.5rem; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+                            <strong>Thank you for your message!</strong><br>
+                            We have received your inquiry and will respond within 24 hours. For immediate assistance, please call us at (555) 847-2626.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo">Mario's <span>Kitchen</span></span>
+                <p>Bringing the heart of Italy to your table since 1987. Every meal is prepared with passion, tradition, and the finest ingredients.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-hours">
+                <h4>Hours</h4>
+                <p>Tue - Thu: 11:30 AM - 9:00 PM</p>
+                <p>Fri: 11:30 AM - 10:30 PM</p>
+                <p>Sat: 10:00 AM - 10:30 PM</p>
+                <p>Sun: 10:00 AM - 9:00 PM</p>
+                <p>Mon: Closed</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Mario's Kitchen. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Log the submission (in production, this would send to a server)
+            console.log('Form submitted:', data);
+
+            // Hide form and show success message
+            this.style.display = 'none';
+            document.getElementById('formSuccess').style.display = 'block';
+
+            // Scroll to success message
+            document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
