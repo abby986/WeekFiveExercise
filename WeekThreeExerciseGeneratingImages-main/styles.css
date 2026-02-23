@@ -481,11 +481,11 @@ section {
 .carousel-stage {
     position: relative;
     padding: 0 4rem;
+    overflow: hidden;
 }
 
 .carousel-track {
     display: flex;
-    overflow: hidden;
     transition: transform 0.4s ease;
 }
 
