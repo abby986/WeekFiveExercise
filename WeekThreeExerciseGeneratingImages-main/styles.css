@@ -564,6 +564,22 @@ section {
     margin-top: 0.5rem;
 }
 
+/* Fieldset reset so .star-rating-group looks like a normal .form-group */
+.star-rating-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.star-rating-group legend {
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
 /* Star Rating Widget */
 .star-rating {
     display: flex;
@@ -573,8 +589,13 @@ section {
     margin-top: 0.4rem;
 }
 
+/* Visually hidden but still reachable by keyboard and screen readers */
 .star-rating input[type="radio"] {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
 }
 
 .star-rating label {

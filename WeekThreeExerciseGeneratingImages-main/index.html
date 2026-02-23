@@ -175,9 +175,9 @@
                             <input type="text" id="reviewerNameInput" name="reviewerName" required placeholder="e.g. Maria Rossi">
                         </div>
 
-                        <div class="form-group">
-                            <label>Your Rating *</label>
-                            <div class="star-rating" role="radiogroup" aria-label="Star rating">
+                        <fieldset class="form-group star-rating-group">
+                            <legend>Your Rating *</legend>
+                            <div class="star-rating">
                                 <input type="radio" id="star5" name="rating" value="5">
                                 <label for="star5" aria-label="5 stars">★</label>
                                 <input type="radio" id="star4" name="rating" value="4">
@@ -189,7 +189,7 @@
                                 <input type="radio" id="star1" name="rating" value="1">
                                 <label for="star1" aria-label="1 star">★</label>
                             </div>
-                        </div>
+                        </fieldset>
 
                         <div class="form-group">
                             <label for="reviewTextInput">Your Review *</label>
