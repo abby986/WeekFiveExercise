@@ -444,8 +444,6 @@ section {
     border-radius: 8px;
     box-shadow: 0 4px 20px var(--shadow);
     padding: 2.5rem 3rem;
-    max-width: 680px;
-    margin: 0 auto;
     text-align: center;
     flex: 0 0 100%;
 }
@@ -476,9 +474,13 @@ section {
 
 /* Reviews Carousel */
 .reviews-carousel {
+    max-width: 800px;
+    margin: 3rem auto 0;
+}
+
+.carousel-stage {
     position: relative;
     padding: 0 4rem;
-    margin-top: 3rem;
 }
 
 .carousel-track {
@@ -529,7 +531,7 @@ section {
     border: 2px solid var(--gray-light);
     cursor: pointer;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    display: inline-block;
+    padding: 0;
 }
 
 .dot--active {
@@ -1066,10 +1068,8 @@ footer {
     .gallery-grid {
         grid-template-columns: 1fr;
     }
-}
 
-@media (max-width: 768px) {
-    .reviews-carousel {
+    .carousel-stage {
         padding: 0 2.5rem;
     }
 
