@@ -1110,6 +1110,36 @@ footer {
         padding: 0.8rem 1.5rem;
         font-size: 0.9rem;
     }
+
+    /* Carousel — tighter arrow padding and smaller buttons on phones */
+    .carousel-stage {
+        padding: 0 2rem;
+    }
+
+    .carousel-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.3rem;
+    }
+
+    .review-card {
+        padding: 1.5rem 1rem;
+    }
+
+    /* Slightly larger dot touch target on phones */
+    .dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    /* Review form — tighter padding and smaller stars */
+    .review-form-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    .star-rating label {
+        font-size: 1.8rem;
+    }
 }
 
 /* Food Gallery */
