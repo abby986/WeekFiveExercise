@@ -284,6 +284,57 @@
 
             startTimer(); // begin auto-play
         }());
+
+        // Star rating widget
+        (function () {
+            const widget = document.querySelector('.star-rating');
+            const labels = Array.from(widget.querySelectorAll('label'));
+            const inputs = Array.from(widget.querySelectorAll('input[type="radio"]'));
+            let selectedRating = 0;
+
+            // Each label's preceding sibling is its radio input
+            function valueOf(label) {
+                return parseInt(label.previousElementSibling.value, 10);
+            }
+
+            // Set inline colour on every label; clearing (passing 0) lets
+            // CSS input:checked ~ label take over for the selected state
+            function paint(upTo) {
+                labels.forEach(function (label) {
+                    label.style.color = upTo > 0
+                        ? (valueOf(label) <= upTo ? '#C8922A' : '#D1D5DB')
+                        : '';
+                });
+            }
+
+            // Hover: preview the rating under the cursor
+            labels.forEach(function (label) {
+                label.addEventListener('mouseenter', function () {
+                    paint(valueOf(label));
+                });
+            });
+
+            // Keyboard: preview the focused radio's value
+            inputs.forEach(function (input) {
+                input.addEventListener('focus', function () {
+                    paint(parseInt(this.value, 10));
+                });
+            });
+
+            // Mouse/keyboard leave: restore CSS-driven selected state
+            widget.addEventListener('mouseleave', function () { paint(0); });
+            widget.addEventListener('focusout', function (e) {
+                if (!widget.contains(e.relatedTarget)) { paint(0); }
+            });
+
+            // Click: lock in the selection
+            inputs.forEach(function (input) {
+                input.addEventListener('change', function () {
+                    selectedRating = parseInt(this.value, 10);
+                    paint(0); // hand back to CSS so :checked ~ label shows selection
+                });
+            });
+        }());
     </script>
 </body>
 </html>
