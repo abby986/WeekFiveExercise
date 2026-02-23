@@ -222,29 +222,36 @@
                 });
             }
 
+            // Auto-play — always clear before setting to prevent double intervals
+            const INTERVAL_MS = 5000;
+            let timer;
+            function startTimer() {
+                clearInterval(timer);
+                timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
+            }
+
             document.querySelector('.carousel-btn--prev').addEventListener('click', function () {
                 goTo(current - 1);
+                startTimer(); // reset countdown after manual navigation
             });
 
             document.querySelector('.carousel-btn--next').addEventListener('click', function () {
                 goTo(current + 1);
+                startTimer(); // reset countdown after manual navigation
             });
 
             dots.forEach(function (dot, i) {
-                dot.addEventListener('click', function () { goTo(i); });
+                dot.addEventListener('click', function () {
+                    goTo(i);
+                    startTimer(); // reset countdown after manual navigation
+                });
             });
 
-            // Auto-play
-            var INTERVAL_MS = 5000;
-            var timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
+            const stage = document.querySelector('.reviews-carousel');
+            stage.addEventListener('mouseenter', function () { clearInterval(timer); });
+            stage.addEventListener('mouseleave', function () { startTimer(); });
 
-            var stage = document.querySelector('.reviews-carousel');
-            stage.addEventListener('mouseenter', function () {
-                clearInterval(timer);
-            });
-            stage.addEventListener('mouseleave', function () {
-                timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
-            });
+            startTimer(); // begin auto-play
         }());
     </script>
 </body>
