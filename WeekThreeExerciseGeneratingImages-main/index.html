@@ -233,6 +233,18 @@
             dots.forEach(function (dot, i) {
                 dot.addEventListener('click', function () { goTo(i); });
             });
+
+            // Auto-play
+            var INTERVAL_MS = 5000;
+            var timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
+
+            var stage = document.querySelector('.reviews-carousel');
+            stage.addEventListener('mouseenter', function () {
+                clearInterval(timer);
+            });
+            stage.addEventListener('mouseleave', function () {
+                timer = setInterval(function () { goTo(current + 1); }, INTERVAL_MS);
+            });
         }());
     </script>
 </body>
